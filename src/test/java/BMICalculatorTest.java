@@ -60,7 +60,7 @@ public class BMICalculatorTest {
         driver.findElement(By.name("cc")).click();
         String category = driver.findElement(By.name("desc")).getAttribute("value");
         Assert.assertEquals(category, "Your category is Underweight",
-                "Your category matches with reality");
+                "Your category doesn't match with reality");
         driver.quit();
     }
 
@@ -100,7 +100,23 @@ public class BMICalculatorTest {
         driver.switchTo().alert().accept();
         String category = driver.findElement(By.name("desc")).getAttribute("value");
         Assert.assertEquals(category, "Your category is Starvation",
-                "Your category matches with reality");
+                "Your category doesn't match with reality");
+        driver.quit();
+    }
+
+    @Test
+    public void zeroHeightCategory() {
+        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://healthunify.com");
+        driver.findElement(By.id("menu-item-963")).click();
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        driver.findElement(By.name("wg")).sendKeys("75");
+        driver.findElement(By.name("cc")).click();
+        driver.switchTo().alert().accept();
+        String category = driver.findElement(By.name("desc")).getAttribute("value");
+        Assert.assertEquals(category, "Your category is Obese",
+                "Your category doesn't match with reality");
         driver.quit();
     }
 }
